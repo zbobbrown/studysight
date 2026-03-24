@@ -1,0 +1,8 @@
+src-tauri/target/
+focus-engine/build/
+focus-engine/dist/
+focus-engine/training-data/
+focus-engine/focus_model.pkl
+yolov8n.pt
+.DS_Store
+src-tauri/.DS_Store
