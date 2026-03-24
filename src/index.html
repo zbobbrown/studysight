@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudySight</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div id="layout">
+
+    <!-- ── Sidebar ──────────────────────────────────────────────────────── -->
+    <aside id="sidebar">
+
+      <div class="sidebar-logo">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+        <span>StudySight</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Main Menu</div>
+
+        <button class="nav-item active" data-view="timer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+          <span>Timer</span>
+        </button>
+
+        <button class="nav-item" data-view="stats">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="20" x2="18" y2="10"/>
+            <line x1="12" y1="20" x2="12" y2="4"/>
+            <line x1="6"  y1="20" x2="6"  y2="14"/>
+          </svg>
+          <span>Stats</span>
+        </button>
+
+        <button class="nav-item" data-view="goals">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <circle cx="12" cy="12" r="6"/>
+            <circle cx="12" cy="12" r="2"/>
+          </svg>
+          <span>Goals</span>
+        </button>
+
+        <div class="nav-section-label">Preferences</div>
+
+        <button class="nav-item" data-view="settings">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+          <span>Settings</span>
+        </button>
+
+      </nav>
+
+      <!-- Engine status pinned to bottom -->
+      <div id="engine-status" class="engine-status disconnected">
+        <span class="engine-dot"></span>
+        <span class="engine-label">Engine offline</span>
+      </div>
+
+    </aside>
+
+    <!-- ── Main content ──────────────────────────────────────────────────── -->
+    <main id="main">
+
+      <!-- ── Timer View ──────────────────────────────────────────────────── -->
+      <div id="view-timer" class="view active">
+        <div class="page-header">
+          <h1 class="page-title">Timer</h1>
+          <div class="session-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+            <span id="session-count">0</span>
+            <span class="session-badge-label">sessions today</span>
+          </div>
+        </div>
+
+        <!-- Alarm banner -->
+        <div id="alarm-banner" class="alarm-banner hidden">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+          <span>Break time — your focus session is complete.</span>
+          <button id="btn-stop-alarm" class="btn btn-sm btn-outline-danger">Stop Alarm</button>
+        </div>
+
+        <!-- Timer card -->
+        <div class="card timer-card">
+
+          <div id="mode-pill" class="mode-pill focus">Focus</div>
+
+          <div id="timer-ring-wrap">
+            <svg id="timer-ring" viewBox="0 0 220 220">
+              <circle class="ring-track" cx="110" cy="110" r="100" />
+              <circle class="ring-fill" id="ring-fill" cx="110" cy="110" r="100" />
+            </svg>
+            <div id="timer-display">25:00</div>
+          </div>
+
+          <!-- Locked-in indicator -->
+          <div id="locked-in-badge" class="locked-in-badge hidden">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            Locked In
+          </div>
+
+          <!-- Focus score pill -->
+          <div id="score-pill" class="score-pill score-pill--hidden">
+            <span id="score-pill-text"></span>
+          </div>
+
+          <div class="timer-controls">
+            <button id="btn-start" class="btn btn-primary">Start</button>
+            <button id="btn-pause" class="btn btn-secondary" disabled>Pause</button>
+            <button id="btn-reset" class="btn btn-ghost">Reset</button>
+          </div>
+
+          <label class="simple-mode-toggle">
+            <input type="checkbox" id="btn-simple-mode" />
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+            <span class="simple-mode-label-text">Simple mode</span>
+          </label>
+
+          <video id="camera-feed" class="camera-feed hidden" autoplay muted playsinline></video>
+
+        </div>
+
+      </div>
+
+      <!-- ── Stats View ──────────────────────────────────────────────────── -->
+      <div id="view-stats" class="view hidden">
+        <div class="page-header">
+          <h1 class="page-title">Stats</h1>
+          <button id="btn-weekly-review" class="btn btn-ghost btn-sm">Weekly Review</button>
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi-card">
+            <div class="kpi-label">Focus time today</div>
+            <div class="kpi-value" id="stat-today-focus">0m</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Avg focus score (7 days)</div>
+            <div class="kpi-value" id="stat-avg-score">—</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Longest locked-in streak</div>
+            <div class="kpi-value" id="stat-streak">0s</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Sessions this week</div>
+            <div class="kpi-value" id="stat-sessions-week">0</div>
+          </div>
+        </div>
+
+        <div class="charts-grid">
+          <div class="card chart-card">
+            <div class="chart-header">
+              <span class="chart-title">Sessions per day</span>
+              <span class="chart-subtitle">Last 7 days</span>
+            </div>
+            <canvas id="sessions-chart" width="600" height="200"></canvas>
+          </div>
+          <div class="card chart-card">
+            <div class="chart-header">
+              <span class="chart-title">Focus score</span>
+              <span class="chart-subtitle">Last 7 days · avg per session</span>
+            </div>
+            <canvas id="score-chart" width="600" height="200"></canvas>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── Settings View ───────────────────────────────────────────────── -->
+      <div id="view-settings" class="view hidden">
+        <div class="page-header">
+          <h1 class="page-title">Settings</h1>
+        </div>
+
+        <div class="settings-tabs">
+          <button class="tab-btn active" data-tab="general">General</button>
+          <button class="tab-btn" data-tab="alarm">Alarm</button>
+          <button class="tab-btn" data-tab="advanced">Advanced</button>
+        </div>
+
+        <!-- General Tab -->
+        <div id="tab-general" class="tab-panel active">
+          <div class="card settings-card">
+            <div class="settings-section-title">Session</div>
+            <div class="settings-row">
+              <div class="settings-field">
+                <label class="setting-label">Study duration</label>
+                <span class="setting-hint">Minutes per focus session</span>
+              </div>
+              <input type="number" id="set-study-min" class="setting-input" min="1" max="120" value="25" />
+            </div>
+            <div class="settings-row">
+              <div class="settings-field">
+                <label class="setting-label">Break duration</label>
+                <span class="setting-hint">Minutes per break</span>
+              </div>
+              <input type="number" id="set-break-min" class="setting-input" min="1" max="120" value="5" />
+            </div>
+            <div class="settings-row">
+              <div class="settings-field">
+                <label class="setting-label">Focus detection window</label>
+                <span class="setting-hint">Seconds before session end to activate the camera</span>
+              </div>
+              <input type="number" id="set-watch-window" class="setting-input" min="30" max="300" value="60" />
+            </div>
+            <div class="settings-row">
+              <div class="settings-field">
+                <label class="setting-label">Dark mode</label>
+                <span class="setting-hint">Switch between light and dark appearance</span>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" id="set-dark-mode" />
+                <span class="toggle-track"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Alarm Tab -->
+        <div id="tab-alarm" class="tab-panel hidden">
+          <div class="card settings-card">
+            <div class="settings-section-title">Sound</div>
+            <div class="settings-row">
+              <div class="settings-field">
+                <label class="setting-label">Alarm sound</label>
+              </div>
+              <select id="set-alarm-sound" class="setting-select">
+                <option value="chime">Chime (default)</option>
+                <option value="bell">Bell</option>
+                <option value="soft">Soft tone</option>
+                <option value="custom">Custom file…</option>
+              </select>
+            </div>
+            <div class="settings-row">
+              <div class="settings-field">
+                <label class="setting-label">Custom alarm file</label>
+              </div>
+              <input type="file" id="set-alarm-file" class="setting-file hidden" accept="audio/*" />
+            </div>
+            <div class="settings-row">
+              <div class="settings-field">
+                <label class="setting-label">Volume</label>
+                <span class="setting-hint" id="volume-display">70%</span>
+              </div>
+              <input type="range" id="set-alarm-volume" class="setting-range" min="0" max="100" value="70" />
+            </div>
+            <div class="settings-row">
+              <div class="settings-field">
+                <label class="setting-label">Test alarm</label>
+              </div>
+              <button id="btn-test-alarm" class="btn btn-ghost btn-sm">Play preview</button>
+            </div>
+          </div>
+          <div class="card settings-card">
+            <div class="settings-section-title">Ambient Sound</div>
+            <div class="settings-row">
+              <div class="settings-field">
+                <label class="setting-label">Sound</label>
+                <span class="setting-hint">Plays automatically when a focus session starts</span>
+              </div>
+              <select id="set-ambient-sound" class="setting-select">
+                <option value="">None</option>
+                <option value="brown-noise">Brown Noise</option>
+                <option value="rain">Rain</option>
+                <option value="cafe">Cafe</option>
+              </select>
+            </div>
+            <div class="settings-row">
+              <div class="settings-field">
+                <label class="setting-label">Volume</label>
+                <span class="setting-hint" id="ambient-volume-display">30%</span>
+              </div>
+              <input type="range" id="set-ambient-volume" class="setting-range" min="0" max="100" value="30" />
+            </div>
+          </div>
+          <div class="card settings-card">
+            <div class="settings-section-title">Notifications</div>
+            <div class="settings-row">
+              <div class="settings-field">
+                <label class="setting-label">System notification</label>
+                <span class="setting-hint">Show a macOS notification when break starts</span>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" id="set-notif" checked />
+                <span class="toggle-track"></span>
+              </label>
+            </div>
+            <div class="settings-row">
+              <div class="settings-field">
+                <label class="setting-label">Bring app to front</label>
+                <span class="setting-hint">Focus the StudySight window when alarm fires</span>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" id="set-focus-window" checked />
+                <span class="toggle-track"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Advanced Tab -->
+        <div id="tab-advanced" class="tab-panel hidden">
+          <div class="card settings-card">
+            <div class="settings-section-title">Focus Engine</div>
+            <div class="settings-row">
+              <div class="settings-field">
+                <label class="setting-label">Enable focus detection</label>
+                <span class="setting-hint">Pauses timer when you're locked in (requires webcam + Python engine)</span>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" id="set-focus-detection" />
+                <span class="toggle-track"></span>
+              </label>
+            </div>
+            <div class="settings-row">
+              <div class="settings-field">
+                <label class="setting-label">Lock-in threshold</label>
+                <span class="setting-hint">Score must reach this to pause the timer (default: 90)</span>
+              </div>
+              <input type="number" id="set-threshold" class="setting-input" min="50" max="100" value="90" />
+            </div>
+            <div class="settings-row">
+              <div class="settings-field">
+                <label class="setting-label">Lock-in duration</label>
+                <span class="setting-hint">Seconds you must hold the threshold score</span>
+              </div>
+              <input type="number" id="set-lockin-secs" class="setting-input" min="10" max="60" value="30" />
+            </div>
+            <div class="settings-row">
+              <div class="settings-field">
+                <label class="setting-label">Distraction grace period</label>
+                <span class="setting-hint">Seconds below threshold before break triggers</span>
+              </div>
+              <input type="number" id="set-distract-secs" class="setting-input" min="10" max="120" value="45" />
+            </div>
+            <div class="settings-row">
+              <div class="settings-field">
+                <label class="setting-label">WebSocket port</label>
+              </div>
+              <input type="number" id="set-ws-port" class="setting-input" min="1024" max="65535" value="8765" />
+            </div>
+          </div>
+          <div class="card settings-card">
+            <div class="settings-section-title">Display</div>
+            <div class="settings-row">
+              <div class="settings-field">
+                <label class="setting-label">Show focus score</label>
+                <span class="setting-hint">Display live score on the timer screen</span>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" id="set-show-score" />
+                <span class="toggle-track"></span>
+              </label>
+            </div>
+            <div id="focus-score-display" class="focus-score-live hidden">
+              <span class="score-number" id="live-score">—</span>
+              <span class="score-label">focus score</span>
+            </div>
+            <div class="settings-row">
+              <div class="settings-field">
+                <label class="setting-label">Show camera feed</label>
+                <span class="setting-hint">See yourself while studying ("see yourself" mode)</span>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" id="set-show-camera" />
+                <span class="toggle-track"></span>
+              </label>
+            </div>
+          </div>
+          <div class="card settings-card">
+            <div class="settings-section-title">Internals</div>
+            <div id="engine-debug" class="engine-debug">
+              <div>Status: <span id="dbg-status">disconnected</span></div>
+              <div>Last score: <span id="dbg-score">—</span></div>
+              <div>State: <span id="dbg-state">idle</span></div>
+              <div>Locked-in for: <span id="dbg-lockin">—</span></div>
+              <div>Distracted for: <span id="dbg-distract">—</span></div>
+            </div>
+            <div class="settings-row" style="margin-top:16px">
+              <div class="settings-field">
+                <label class="setting-label">Session data</label>
+              </div>
+              <button id="btn-clear-data" class="btn btn-ghost btn-sm btn-danger-text">Clear all data</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── Goals View ───────────────────────────────────────────────── -->
+      <div id="view-goals" class="view">
+
+        <div class="page-header">
+          <h1 class="page-title">Goals</h1>
+          <button id="g-add-goal-btn" class="btn btn-primary btn-sm">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">
+              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            Add goal
+          </button>
+        </div>
+
+        <div class="goals-layout">
+
+          <!-- Left column: goal cards -->
+          <div class="goals-col-left">
+            <div class="g-card" style="padding: 0; overflow: hidden;">
+              <div id="g-goal-list" class="g-goal-list" style="padding: 12px;"></div>
+            </div>
+          </div>
+
+          <!-- Right column: activity chart -->
+          <div class="goals-col-right">
+            <div class="g-card g-activity-card">
+              <div class="g-activity-header">
+                <div class="g-activity-title-col">
+                  <div class="g-activity-label">Daily Completions</div>
+                  <div id="g-chart-summary" class="g-activity-summary">—</div>
+                </div>
+                <select id="g-chart-period" class="g-chart-period-select">
+                  <option value="7">Last 7 days</option>
+                  <option value="14">Last 14 days</option>
+                  <option value="30">Last 30 days</option>
+                </select>
+              </div>
+              <canvas id="g-activity-chart" width="480" height="200"></canvas>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Add / Edit modal -->
+        <div id="g-modal-overlay" class="g-modal-overlay g-modal--hidden">
+          <div class="g-modal-box">
+            <div id="g-modal-body"></div>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ── Onboarding overlay (shown only on first launch) ──────────────── -->
+  <div id="onboarding-overlay" class="onboarding-overlay onboarding--hidden">
+    <div class="onboarding-card">
+
+      <div class="onboarding-logo">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+        <span class="onboarding-logo-name">StudySight</span>
+      </div>
+
+      <h1 class="onboarding-title">Your Pomodoro timer that knows when you're locked in.</h1>
+      <p class="onboarding-sub">No account. No setup. Just start a session.</p>
+
+      <ul class="onboarding-features">
+        <li>
+          <span class="onboarding-feature-icon">⏱</span>
+          <span><strong>Pomodoro timer</strong> — focus sessions with automatic break reminders</span>
+        </li>
+        <li>
+          <span class="onboarding-feature-icon">👁</span>
+          <span><strong>Focus detection</strong> — optional webcam engine scores your focus in real time</span>
+        </li>
+        <li>
+          <span class="onboarding-feature-icon">🔒</span>
+          <span><strong>Locked In</strong> — when you're deep in flow, the timer pauses so you don't get interrupted</span>
+        </li>
+      </ul>
+
+      <button id="btn-get-started" class="btn btn-primary onboarding-cta">Get Started</button>
+
+    </div>
+  </div>
+
+  <!-- ── Session Notes Panel ─────────────────────────────────────────── -->
+  <div id="sn-overlay" class="sn-overlay sn-overlay--hidden">
+    <div class="sn-card">
+
+      <div class="sn-header">
+        <div class="sn-title">How did that session go?</div>
+        <div class="sn-duration" id="sn-duration"></div>
+      </div>
+
+      <div class="sn-stars" id="sn-stars" role="group" aria-label="Rate your session">
+        <button class="sn-star" data-value="1" aria-label="1 star">★</button>
+        <button class="sn-star" data-value="2" aria-label="2 stars">★</button>
+        <button class="sn-star" data-value="3" aria-label="3 stars">★</button>
+        <button class="sn-star" data-value="4" aria-label="4 stars">★</button>
+        <button class="sn-star" data-value="5" aria-label="5 stars">★</button>
+      </div>
+
+      <textarea id="sn-textarea" class="sn-textarea"
+        placeholder="What did you work on? Any distractions?"
+        rows="3"></textarea>
+
+      <div class="sn-actions">
+        <button id="sn-skip" class="btn btn-ghost btn-sm">Skip</button>
+        <button id="sn-save" class="btn btn-primary btn-sm">Save note</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Weekly Review Modal ──────────────────────────────────────────── -->
+  <div id="wr-overlay" class="wr-overlay wr-overlay--hidden">
+    <div class="wr-modal">
+
+      <div class="wr-header">
+        <div>
+          <div class="wr-eyebrow">Weekly Review</div>
+          <div class="wr-date-range" id="wr-date-range">—</div>
+        </div>
+        <button id="wr-close" class="wr-close-btn" aria-label="Close">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="wr-stats-grid">
+        <div class="wr-stat">
+          <div class="wr-stat-value" id="wr-total-focus">—</div>
+          <div class="wr-stat-label">Focus time</div>
+        </div>
+        <div class="wr-stat">
+          <div class="wr-stat-value" id="wr-sessions">—</div>
+          <div class="wr-stat-label">Sessions</div>
+        </div>
+        <div class="wr-stat">
+          <div class="wr-stat-value" id="wr-avg-session">—</div>
+          <div class="wr-stat-label">Avg session</div>
+        </div>
+        <div class="wr-stat">
+          <div class="wr-stat-value" id="wr-goals">—</div>
+          <div class="wr-stat-label">Goals done</div>
+        </div>
+      </div>
+
+      <div class="wr-best-day-row" id="wr-best-day-row">
+        <span class="wr-best-day-label">Best day</span>
+        <span class="wr-best-day-value" id="wr-best-day">—</span>
+      </div>
+
+      <div class="wr-chart-section">
+        <div class="wr-chart-title">Daily focus · Mon – Sun</div>
+        <canvas id="wr-chart" width="480" height="120"></canvas>
+      </div>
+
+      <button id="wr-start-week" class="btn btn-primary wr-cta">Start this week</button>
+
+    </div>
+  </div>
+
+  <script src="js/timer.js"></script>
+  <script src="js/stats.js"></script>
+  <script src="js/goals.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
